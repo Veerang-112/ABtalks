@@ -1,19 +1,46 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const ChallengeDay12 = ({
   challenge,
-  onGoToDashboard,
   onSubmitChallenge,
 }) => {
-  const [code, setCode] = useState('');
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/dashboard');
+    }
+  };
+  const [githubRepo, setGithubRepo] = useState('');
+  const [linkedInPost, setLinkedInPost] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [earnedXp, setEarnedXp] = useState(0);
 
-  // Set initial code based on previous submissions or starter template
+  const currentDate = new Date();
+  const isToday = challenge?.day === currentDate.getDate();
+  const isCompleted = challenge?.status === 'completed';
+  const isBlocked = challenge?.status === 'incomplete';
+
+  // Set initial submission fields based on previous structured submission or starter template
   useEffect(() => {
     if (challenge) {
-      setCode(challenge.submitted_code || challenge.starter_code || '');
+      if (challenge.submitted_code) {
+        try {
+          const parsed = JSON.parse(challenge.submitted_code);
+          setGithubRepo(parsed.githubRepo || '');
+          setLinkedInPost(parsed.linkedinPost || '');
+        } catch (err) {
+          setGithubRepo('');
+          setLinkedInPost('');
+        }
+      } else {
+        setGithubRepo('');
+        setLinkedInPost('');
+      }
     }
   }, [challenge]);
 
@@ -34,6 +61,26 @@ export const ChallengeDay12 = ({
   }
 
   const handleSubmit = async () => {
+    const githubValue = githubRepo.trim();
+    const linkedInValue = linkedInPost.trim();
+    const githubValid = /^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/?$/i.test(githubValue);
+    const linkedInValid = !linkedInValue || /^https:\/\/www\.linkedin\.com\/.+/i.test(linkedInValue);
+
+    if (!githubValue) {
+      alert('GitHub repository URL is required.');
+      return;
+    }
+
+    if (!githubValid) {
+      alert('Please enter a complete GitHub repository URL in the form https://github.com/username/repo.');
+      return;
+    }
+
+    if (!linkedInValid) {
+      alert('If provided, the LinkedIn post link must start with https://www.linkedin.com/.');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const response = await fetch('/api/submit', {
@@ -43,7 +90,7 @@ export const ChallengeDay12 = ({
         },
         body: JSON.stringify({
           day: challenge.day,
-          code: code,
+          code: JSON.stringify({ githubRepo, linkedInPost }),
         }),
       });
 
@@ -60,11 +107,20 @@ export const ChallengeDay12 = ({
       }
     } catch (err) {
       console.error(err);
-      alert('Error submitting code. Is the server running?');
+      alert('Error submitting challenge. Is the server running?');
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const editorDisabled = challenge.status === 'completed' || isBlocked;
+  const submitButtonLabel = challenge.status === 'completed'
+    ? 'ALREADY SUBMITTED'
+    : isBlocked
+      ? 'CHALLENGE CLOSED'
+      : isSubmitting
+        ? 'SUBMITTING...'
+        : 'SUBMIT CODE';
 
   return (
     <div className="bg-background text-on-background min-h-screen pb-12 pt-[72px]">
@@ -73,9 +129,9 @@ export const ChallengeDay12 = ({
         <div className="flex justify-between items-center px-container-margin h-touch-target w-full max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
             <button
-              onClick={onGoToDashboard}
+              onClick={goBack}
               className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-all duration-200 active:scale-95 cursor-pointer"
-              aria-label="Go back to Dashboard"
+              aria-label="Go back"
             >
               <span className="material-symbols-outlined text-primary">arrow_back</span>
             </button>
@@ -111,6 +167,19 @@ export const ChallengeDay12 = ({
             <h1 className="font-headline-md text-headline-md-mobile text-on-background mb-4">
               {challenge.title}
             </h1>
+            {isCompleted ? (
+              <div className="mb-4 rounded-2xl bg-tertiary-fixed/10 border border-tertiary-fixed p-4 text-sm text-tertiary-fixed">
+                This task has already been submitted. You can review your code or go back to the dashboard.
+              </div>
+            ) : isBlocked ? (
+              <div className="mb-4 rounded-2xl bg-error-container/10 border border-error-container p-4 text-sm text-error-container">
+                This challenge was not completed on time and is now closed. Review the instructions, but submissions are blocked.
+              </div>
+            ) : isToday ? (
+              <div className="mb-4 rounded-2xl bg-secondary-container/10 border border-secondary p-4 text-sm text-secondary-container">
+                Today's challenge is still open. Submit your code before the end of the day.
+              </div>
+            ) : null}
             <p className="font-body-md text-body-md text-on-surface-variant mb-6">
               {challenge.description}
             </p>
@@ -139,7 +208,7 @@ export const ChallengeDay12 = ({
 
         {/* Right Column: Code Editor */}
         <section className="lg:col-span-7 flex flex-col gap-4">
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col h-[500px]">
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col min-h-[360px]">
             {/* Editor Tab Bar */}
             <div className="bg-surface-container-low px-4 py-2 border-b border-outline-variant flex justify-between items-center">
               <div className="flex items-center gap-2">
@@ -151,39 +220,57 @@ export const ChallengeDay12 = ({
               <span className="text-xs font-mono text-primary font-bold">EDIT MODE</span>
             </div>
 
-            {/* Code Textarea */}
-            <div className="relative flex-grow flex">
-              {/* Line Numbers */}
-              <div className="w-12 bg-surface-container-low border-r border-outline-variant flex flex-col pt-4 font-mono text-xs text-outline text-right pr-3 select-none">
-                {Array.from({ length: Math.max(15, code.split('\n').length + 5) }).map((_, i) => (
-                  <div key={i} className="leading-6">{i + 1}</div>
-                ))}
+            <div className="flex flex-col gap-4 p-6">
+              <div>
+                <label className="font-label-caps text-label-caps text-on-surface-variant mb-2 block">
+                  GitHub Repository URL <span className="text-error">*</span>
+                </label>
+                <input
+                  type="url"
+                  value={githubRepo}
+                  onChange={(e) => setGithubRepo(e.target.value)}
+                  disabled={editorDisabled}
+                  placeholder="https://github.com/your-account/your-repo"
+                  className="w-full rounded-2xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-sm text-on-background outline-none transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/10 disabled:opacity-60 disabled:cursor-not-allowed"
+                />
+                <p className="text-[11px] text-on-surface-variant mt-2">Required. Must be a GitHub repository URL.</p>
               </div>
-
-              {/* Textarea */}
-              <textarea
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="<!-- Write your HTML/CSS/JS code here -->"
-                className="flex-grow p-4 bg-transparent outline-none border-none font-mono text-sm leading-6 resize-none overflow-y-auto w-full text-on-background bg-surface-container-lowest"
-              />
+              <div className="flex-1">
+                <label className="font-label-caps text-label-caps text-on-surface-variant mb-2 block">
+                  LinkedIn Post Link <span className="text-on-surface-variant">(optional)</span>
+                </label>
+                <input
+                  type="url"
+                  value={linkedInPost}
+                  onChange={(e) => setLinkedInPost(e.target.value)}
+                  disabled={editorDisabled}
+                  placeholder="https://www.linkedin.com/posts/your-post"
+                  className="w-full rounded-2xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-sm text-on-background outline-none transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/10 disabled:opacity-60 disabled:cursor-not-allowed"
+                />
+              </div>
             </div>
 
             {/* Editor Footer Actions */}
             <div className="bg-surface-container-low px-6 py-4 border-t border-outline-variant flex justify-between items-center">
               <button
-                onClick={() => setCode(challenge.starter_code || '')}
+                onClick={() => {
+                  setGithubRepo('');
+                  setLinkedInPost('');
+                }}
                 className="text-sm font-label-caps text-on-surface-variant hover:text-primary transition-colors cursor-pointer"
+                disabled={editorDisabled}
               >
-                RESET TO STARTER
+                CLEAR FIELDS
               </button>
               <button
                 onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="bg-primary hover:brightness-110 text-on-primary font-label-caps text-label-caps px-8 h-touch-target rounded-lg flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 cursor-pointer shadow-[0px_4px_12px_rgba(0,74,198,0.25)]"
+                disabled={isSubmitting || editorDisabled}
+                className="bg-primary hover:brightness-110 text-on-primary font-label-caps text-label-caps px-8 h-touch-target rounded-lg flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 cursor-pointer shadow-[0px_4px_12px_rgba(0,74,198,0.25)] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? (
+                {submitButtonLabel === 'SUBMITTING...' ? (
                   <span>SUBMITTING...</span>
+                ) : submitButtonLabel === 'ALREADY SUBMITTED' ? (
+                  <span>ALREADY SUBMITTED</span>
                 ) : (
                   <>
                     <span>SUBMIT CODE</span>

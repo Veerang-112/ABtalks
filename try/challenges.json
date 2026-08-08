@@ -1,9 +1,4 @@
 {
-  "stats": {
-    "streak": 13,
-    "total_commits": 46,
-    "tasks_done": 13
-  },
   "challenges": [
     {
       "day": 1,
@@ -12,7 +7,6 @@
       "xp": 10,
       "difficulty": "Easy",
       "status": "completed",
-      "submitted_code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Day 1 Challenge</title>\n</head>\n<body>\n  <h1>Hello, World!</h1>\n</body>\n</html>",
       "starter_code": "<!DOCTYPE html>\n<html>\n<!-- Add your head and body tags here -->\n</html>",
       "instructions": "1. Add <!doctype html>\n2. Set language to English\n3. Add head and body tags\n4. Set title to 'Day 1'"
     },
@@ -23,7 +17,6 @@
       "xp": 15,
       "difficulty": "Easy",
       "status": "completed",
-      "submitted_code": "button {\n  background-color: #004ac6;\n  color: white;\n  border: none;\n  padding: 10px 20px;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background-color 0.2s;\n}\nbutton:hover {\n  background-color: #0053db;\n}",
       "starter_code": "button {\n  /* Your custom CSS styles here */\n}",
       "instructions": "1. Add a primary background color\n2. Style text in white\n3. Set a smooth transition on hover"
     },
@@ -33,8 +26,7 @@
       "description": "Create a layout with an image, text content, and a button inside a modern card component.",
       "xp": 20,
       "difficulty": "Easy",
-      "status": "completed",
-      "submitted_code": ".card { border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 16px; }"
+      "status": "completed"
     },
     {
       "day": 4,
@@ -42,8 +34,7 @@
       "description": "Create an input form containing name, email, and submission handling.",
       "xp": 20,
       "difficulty": "Easy",
-      "status": "completed",
-      "submitted_code": "<form>\n  <input type=\"text\" placeholder=\"Name\">\n  <input type=\"email\" placeholder=\"Email\">\n  <button type=\"submit\">Submit</button>\n</form>"
+      "status": "completed"
     },
     {
       "day": 5,
@@ -51,8 +42,7 @@
       "description": "Align three item boxes horizontally and spread them out evenly using CSS Flexbox properties.",
       "xp": 25,
       "difficulty": "Medium",
-      "status": "completed",
-      "submitted_code": ".container {\n  display: flex;\n  justify-content: space-between;\n}"
+      "status": "completed"
     },
     {
       "day": 6,
@@ -60,8 +50,7 @@
       "description": "Write a script that displays the current time on the screen when a button is clicked.",
       "xp": 25,
       "difficulty": "Medium",
-      "status": "completed",
-      "submitted_code": "document.getElementById('btn').addEventListener('click', () => {\n  document.getElementById('time').innerText = new Date().toLocaleTimeString();\n});"
+      "status": "completed"
     },
     {
       "day": 7,
@@ -69,8 +58,7 @@
       "description": "Apply responsive breakpoints to change background colors from red to green to blue dynamically.",
       "xp": 30,
       "difficulty": "Medium",
-      "status": "completed",
-      "submitted_code": "@media (max-width: 600px) { body { background: red; } }"
+      "status": "completed"
     },
     {
       "day": 8,
@@ -78,8 +66,7 @@
       "description": "Fetch user statistics using the Fetch API and display names in an HTML list element.",
       "xp": 30,
       "difficulty": "Medium",
-      "status": "completed",
-      "submitted_code": "fetch('https://api.github.com/users').then(r => r.json()).then(data => console.log(data));"
+      "status": "completed"
     },
     {
       "day": 9,
@@ -87,17 +74,15 @@
       "description": "Create smooth hover effects and keyframe animations for interactive UI elements.",
       "xp": 35,
       "difficulty": "Medium",
-      "status": "completed",
-      "submitted_code": ".animate {\n  animation: fadein 2s infinite;\n}\n@keyframes fadein {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}"
+      "status": "completed"
     },
     {
       "day": 10,
-      "title": "Accessible Form Validation",
-      "description": "Build a sign-up form with real-time validation and ARIA attributes for accessibility.",
+      "title": "CSS Animations",
+      "description": "Create smooth hover effects and keyframe animations for interactive UI elements.",
       "xp": 35,
-      "difficulty": "Hard",
-      "status": "missed",
-      "submitted_code": ""
+      "difficulty": "Medium",
+      "status": "incomplete"
     },
     {
       "day": 11,
@@ -105,8 +90,7 @@
       "description": "Implement a complex dashboard layout utilizing CSS Grid areas and responsive sizing.",
       "xp": 40,
       "difficulty": "Medium",
-      "status": "completed",
-      "submitted_code": ".grid-container {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n  gap: 16px;\n}"
+      "status": "completed"
     },
     {
       "day": 12,
@@ -114,8 +98,7 @@
       "description": "Create a mobile-first navigation bar using CSS Flexbox that adapts to desktop screens dynamically.",
       "xp": 40,
       "difficulty": "Medium",
-      "status": "completed",
-      "submitted_code": "<nav class=\"flex justify-between items-center p-4 bg-gray-800 text-white\">\n  <div class=\"logo font-bold\">Logo</div>\n  <ul class=\"flex gap-4 md:flex-row flex-col\">\n    <li><a href=\"#\">Home</a></li>\n    <li><a href=\"#\">About</a></li>\n  </ul>\n</nav>",
+      "status": "incomplete",
       "starter_code": "<nav>\n  <!-- Create flexbox container with responsive items -->\n</nav>",
       "instructions": "1. Build a <nav> container.\n2. Apply display: flex and justify-content: space-between.\n3. Make menu items wrap or collapse on mobile sizes."
     },
@@ -125,28 +108,9 @@
       "description": "Implement a robust dark mode toggle using CSS variables and local storage to persist user preferences across sessions. Focus on smooth transitions and semantic color mapping.",
       "xp": 50,
       "difficulty": "Medium",
-      "status": "completed",
-      "submitted_code": "// Select elements\nconst toggleBtn = document.querySelector('#theme-toggle');\n\n// Toggle theme implementation\ntoggleBtn.addEventListener('click', () => {\n  const isDark = document.documentElement.classList.toggle('dark');\n  localStorage.setItem('theme', isDark ? 'dark' : 'light');\n});",
+      "status": "pending",
       "starter_code": "// Select elements\nconst toggleBtn = document.querySelector('#theme-toggle');\n\n// Toggle theme implementation\ntoggleBtn.addEventListener('click', () => {\n  const isDark = document.documentElement.classList.toggle('dark');\n  localStorage.setItem('theme', isDark ? 'dark' : 'light');\n});",
       "instructions": "1. Select your toggle switch button from DOM.\n2. Add event listener to toggle 'dark' class on <html> document.\n3. Store user selection in LocalStorage.\n4. Apply dark state on page load based on storage."
-    },
-    {
-      "day": 14,
-      "title": "Implement LocalStorage Hook",
-      "description": "Write a custom React hook `useLocalStorage` to synchronize state with local storage key-value pairs.",
-      "xp": 50,
-      "difficulty": "Medium",
-      "status": "upcoming",
-      "starter_code": "function useLocalStorage(key, initialValue) {\n  // Implement local storage custom state hook\n}",
-      "instructions": "1. Initialize state from LocalStorage or default fallback.\n2. Update LocalStorage whenever state changes."
-    },
-    {
-      "day": 15,
-      "title": "Create a Modal Dialog",
-      "description": "Design an accessible modal popup window using HTML <dialog> elements and backdrop styling overlays.",
-      "xp": 55,
-      "difficulty": "Hard",
-      "status": "upcoming"
     }
   ]
 }
