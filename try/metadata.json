@@ -1,0 +1,6 @@
+{
+  "name": "ABTalks",
+  "description": "60 Days to a Better Developer - High-octane student coding challenge platform and dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
