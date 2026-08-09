@@ -1,6 +1,3 @@
 flask
-json
 subprocess
 flask_cors
-sys
-os
