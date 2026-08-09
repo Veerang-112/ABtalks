@@ -4,7 +4,7 @@ ABTalks is a 60-day developer learning dashboard built for students and challeng
 
 ## Live Demo
 
-- Live deploy link: https://veerang-112.github.io/ABtalks
+- Live deploy link: https://ab-talks-9ovk.onrender.com
 
 ## Project Description
 
