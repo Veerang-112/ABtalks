@@ -44,6 +44,7 @@ python server.py
 ```
 
 Then open `http://localhost:5000` in your browser.
+the other link is to open site on mobile phone + on other devices too.
 
 ## Repository
 
@@ -52,4 +53,4 @@ Then open `http://localhost:5000` in your browser.
 
 ## Notes
 
-The README can be updated once the exact hosted URL is available or when the project is deployed to a hosting provider.
+the deployed link requires to restart as the site is build on the flask it get's deactive after 50 sec of inactivity as it runs on free cpu.
